@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio - Mi Aplicación</title>
+    <style>
+        /* ----- Reset & Base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f5f5;
+            font-family: 'Segoe UI', Roboto, system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- Header / Navegación ----- */
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e8e8e8;
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.92);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            font-size: 1.3rem;
+            font-weight: 500;
+            letter-spacing: -0.3px;
+            color: #1e1e1e;
+            text-decoration: none;
+        }
+
+        .logo span {
+            font-weight: 300;
+            color: #888;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #444;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 400;
+            padding: 0.4rem 0;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: #1e1e1e;
+            border-bottom-color: #1e1e1e;
+        }
+
+        .nav-links a.active {
+            color: #1e1e1e;
+            border-bottom-color: #1e1e1e;
+            font-weight: 500;
+        }
+
+        /* ----- Main Content ----- */
+        .main {
+            flex: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            width: 100%;
+        }
+
+        /* ----- Hero / Título grande ----- */
+        .hero {
+            margin-bottom: 3.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 300;
+            letter-spacing: -1.5px;
+            color: #1e1e1e;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero h1 strong {
+            font-weight: 600;
+        }
+
+        .hero .subtitle {
+            font-size: 1.1rem;
+            color: #777;
+            font-weight: 300;
+            margin-top: 0.5rem;
+        }
+
+        /* ----- Sección de instrucciones ----- */
+        .instructions {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2.5rem;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: #1e1e1e;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.3px;
+        }
+
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+        }
+
+        .instruction-card {
+            background: #ffffff;
+            padding: 1.8rem 1.8rem 2rem;
+            border-radius: 16px;
+            border: 1px solid #e8e8e8;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .instruction-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+        }
+
+        .instruction-card .step-number {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .instruction-card h3 {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #1e1e1e;
+            margin-bottom: 0.6rem;
+        }
+
+        .instruction-card p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            font-weight: 300;
+        }
+
+        .instruction-card .highlight {
+            display: inline-block;
+            background: #f0f0f0;
+            padding: 0.15rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #333;
+            margin-top: 0.4rem;
+        }
+
+        /* ----- Sección de características (opcional) ----- */
+        .features {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e8e8e8;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: #555;
+            font-size: 0.95rem;
+        }
+
+        .feature-item .icon {
+            width: 8px;
+            height: 8px;
+            background: #1e1e1e;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ----- Footer ----- */
+        .footer {
+            background: #ffffff;
+            border-top: 1px solid #e8e8e8;
+            padding: 1.5rem 2rem;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .footer a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .footer a:hover {
+            color: #1e1e1e;
+        }
+
+        /* ----- Responsive ----- */
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.8rem 1.2rem;
+            }
+
+            .header-container {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                gap: 1.2rem;
+                width: 100%;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .main {
+                padding: 2rem 1.2rem;
+            }
+
+            .instruction-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+
+            .nav-links {
+                gap: 0.8rem;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-container">
+            <a href="/" class="logo">EFF <span>· FEBAMBA</span></a>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="/" class="active">Inicio</a></li>
+                    <li><a href="/api/formulario">Formulario</a></li>
+                    <li><a href="/api/listar/opcion_1">Estadísticas</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main">
+        <!-- Hero -->
+        <section class="hero">
+            <h1>
+                <strong>Bienvenido</strong>
+            </h1>
+            <p class="subtitle">
+                Gestión sencilla y eficiente de los datos de jugadores
+            </p>
+        </section>
+
+        <!-- Instrucciones -->
+        <section class="instructions">
+            <h2 class="section-title">Caracteristicas Disponibles</h2>
+
+            <div class="instruction-grid">
+                <!-- Paso 1 -->
+                <div class="instruction-card">
+                    <span class="step-number">Estadisticas</span>
+                    <h3>Promedios, evolucion y seguimiento</h3>
+                    <p>
+                        Estadisticas promedio y avanzadas de cada jugador y para cada categoria. 
+                        Solo debe subir el archivo CSV de cada partido provisto por la app de 
+                        la confederacion (CABB).
+                    </p>
+                </div>
+
+                <!-- Paso 2 -->
+                <div class="instruction-card">
+                    <span class="step-number">Registro</span>
+                    <h3>Datos de uso interno</h3>
+                    <p>
+                        Guarde un registro interno con los datos personales de cada jugador,
+                        tales como dni, altura, peso, numero de camiseta, etc.
+                    </p>
+                </div>
+
+                <!-- Paso 3 -->
+                <div class="instruction-card">
+                    <span class="step-number">Portabilidad</span>
+                    <h3>Exporte a CSV, XLS/XLSX o PDF</h3>
+                    <p>
+                        Exporte desde datos en crudo para analistas o entrendores hasta
+                        reportes en PDF para jugadores.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Características adicionales -->
+        <section class="features">
+            <h2 class="section-title">Características</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <span class="icon"></span>
+                    Almacenamiento organizado por categorías
+                </div>
+                <div class="feature-item">
+                    <span class="icon"></span>
+                    Nombrado automático de archivos
+                </div>
+                <div class="feature-item">
+                    <span class="icon"></span>
+                    Interfaz minimalista y rápida
+                </div>
+                <div class="feature-item">
+                    <span class="icon"></span>
+                    Compatible con todos los navegadores
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="footer-container">
+            <span>&copy; 2026 Mi Aplicación. Todos los derechos reservados.</span>
+            <div>
+                <a href="#privacidad">Privacidad</a>
+                &nbsp;·&nbsp;
+                <a href="#terminos">Términos</a>
+                &nbsp;·&nbsp;
+                <a href="#contacto">Contacto</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

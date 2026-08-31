@@ -1,0 +1,33 @@
+---
+// src/pages/categoria/[categoria]/stats.astro
+
+import Layout from '../../../../layouts/Layout.astro';
+import CategoriaStatsPage from '../../../../components/CategoryStatsPage';
+
+// Obtener el parámetro de la URL
+const { categoria } = Astro.params;
+
+// Para generar rutas estáticas en build (ahora solo para el enrutamiento)
+export async function getStaticPaths() {
+  const categorias = [
+    'premini',
+    'mini',
+    'u13',
+    'u15',
+    'u17',
+    'u21',
+    'flex',
+    'primera',
+  ];
+  
+  return categorias.map((cat) => ({
+    params: { categoria: cat },
+  }));
+}
+---
+
+<Layout>
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+    <CategoriaStatsPage categoria={categoria} client:load />
+  </main>
+</Layout>

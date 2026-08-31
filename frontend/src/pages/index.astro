@@ -1,0 +1,164 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout>
+    <main
+        class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16"
+    >
+        <!-- Hero -->
+        <section
+            class="mb-10 sm:mb-14 pb-6 sm:pb-8 border-b border-[#e8e8e8]"
+        >
+            <h1
+                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-tight text-[#1e1e1e] leading-tight"
+            >
+                <strong class="font-semibold">Bienvenido</strong>
+            </h1>
+            <p class="text-base sm:text-lg text-[#777] font-light mt-2">
+                Gestión sencilla y eficiente de los datos de jugadores
+            </p>
+        </section>
+
+        <!-- Instrucciones -->
+        <section
+            class="mb-10 sm:mb-14 pb-6 sm:pb-8 border-b border-[#e8e8e8]"
+        >
+            <h2
+                class="text-2xl sm:text-3xl font-light text-[#1e1e1e] tracking-tight mb-4"
+            >
+                Instrucciones de Uso
+            </h2>
+            <div class="flex flex-col sm:grid-cols-2 gap-3 sm:gap-4">
+                <div
+                    class="flex gap-3 text-[#555] text-sm sm:text-base"
+                >
+                    <span>1.</span>
+                    <p>
+                        En el header tiene un menu para ir a la pagina de cada categoria
+                    </p>
+                    </div>
+                <div
+                    class="flex gap-3 text-[#555] text-sm sm:text-base"
+                >
+                    <span>2.</span>
+                    <p>
+                        Dentro de la pagina de categoria hay una lista con los jugadores que han participado 
+                        en al menos 1 partido en dicha categoria.
+                    </p>
+                </div>
+                <div
+                    class="flex gap-3 text-[#555] text-sm sm:text-base"
+                >
+                    <span>3.</span>
+                    <p>
+                        Para ver las estadisticas avanzadas, clickee el boton "Estadisticas" en la pagina
+                        de la categoria.
+                    </p>
+                </div>
+                <div
+                    class="flex gap-3 text-[#555] text-sm sm:text-base"
+                >
+                    <span>4.</span>
+                    <p>
+                        Para revisar las estadisticas y evolucion de un jugador en particular, clickee el nombre
+                        de un jugador dentro de la pagina de una categoria y en la seccion de estadisticas avanzadas <b>(PROXIMAMENTE)</b>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="">
+            <h2
+                class="text-2xl sm:text-3xl font-light text-[#1e1e1e] tracking-tight mb-6"
+            >
+                Caracteristicas en Desarrollo
+            </h2>
+
+            <div
+                class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6"
+            >
+                <!-- Paso 1 -->
+                <div
+                    class="bg-white rounded-2xl border border-[#e8e8e8] p-5 sm:p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5"
+                >
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-[#aaa] block mb-2"
+                    >
+                        Estadisticas
+                    </span>
+                    <h3
+                        class="text-base sm:text-lg font-medium text-[#1e1e1e] mb-1.5"
+                    >
+                        Promedios, evolucion y seguimiento
+                    </h3>
+                    <p
+                        class="text-sm text-[#666] font-light leading-relaxed"
+                    >
+                        Estadisticas promedio y avanzadas de cada jugador y para cada categoria. 
+                        Solo debe subir el archivo CSV de cada partido provisto por la app de 
+                        la confederacion (CABB).
+                    </p>
+                    <span
+                        class="inline-block bg-[#f0f0f0] text-[#333] text-xs font-medium px-3 py-1 rounded-md mt-3"
+                    >
+                        Facilidad de Uso
+                    </span>
+                </div>
+
+                <!-- Paso 2 -->
+                <div
+                    class="bg-white rounded-2xl border border-[#e8e8e8] p-5 sm:p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5"
+                >
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-[#aaa] block mb-2"
+                    >
+                        Registro
+                    </span>
+                    <h3
+                        class="text-base sm:text-lg font-medium text-[#1e1e1e] mb-1.5"
+                    >
+                        Datos de uso interno
+                    </h3>
+                    <p
+                        class="text-sm text-[#666] font-light leading-relaxed"
+                    >
+                        Guarde un registro interno con los datos personales de cada 
+                        jugador, tales como dni, altura, peso, numero de camiseta, etc. 
+                    </p>
+                    <span
+                        class="inline-block bg-[#f0f0f0] text-[#333] text-xs font-medium px-3 py-1 rounded-md mt-3"
+                    >
+                        Centralicacion de datos
+                    </span>
+                </div>
+
+                <!-- Paso 3 -->
+                <div
+                    class="bg-white rounded-2xl border border-[#e8e8e8] p-5 sm:p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg hover:shadow-black/5"
+                >
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-[#aaa] block mb-2"
+                    >
+                        Portabilidad
+                    </span>
+                    <h3
+                        class="text-base sm:text-lg font-medium text-[#1e1e1e] mb-1.5"
+                    >
+                        Exporte a CSV, XLS/XLSX o PDF
+                    </h3>
+                    <p
+                        class="text-sm text-[#666] font-light leading-relaxed"
+                    >
+                        Exporte desde datos en crudo para analistas o entrendores hasta reportes en PDF para jugadores. 
+                    </p>
+                    <span
+                        class="inline-block bg-[#f0f0f0] text-[#333] text-xs font-medium px-3 py-1 rounded-md mt-3"
+                    >
+                        Multiples Formatos
+                    </span>
+                </div>
+            </div>
+        </section>
+    </main>
+</Layout>

@@ -1,0 +1,30 @@
+---
+// src/pages/categoria/[categoria].astro
+import Layout from '../../../layouts/Layout.astro';
+import CategoriaPage from '../../../components/CategoryPage';
+
+export async function getStaticPaths() {
+  const categorias = [
+    'premini',
+    'mini',
+    'u13',
+    'u15',
+    'u17',
+    'u21',
+    'flex',
+    'primera',
+  ];
+  
+  return categorias.map((categoria) => ({
+    params: { categoria },
+  }));
+}
+
+const { categoria } = Astro.params;
+---
+
+<Layout>
+  <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+    <CategoriaPage categoria={categoria} client:load />
+  </main>
+</Layout>

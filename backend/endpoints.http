@@ -1,0 +1,13 @@
+GET http://localhost:5000/api/u21
+
+###
+
+GET http://localhost:5000/api/stats/process HTTP/1.1
+
+###
+
+GET http://localhost:5000/api/u15/stats
+
+###
+
+GET http://localhost:5000/api/health

@@ -1,0 +1,114 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+interface Categoria {
+  nombre: string;
+  slug: string;
+  descripcion?: string;
+  icono?: string;
+}
+
+// Lista de categorías (puedes modificarla según necesites)
+const categorias: Categoria[] = [
+  { 
+    nombre: 'Pre Mini', 
+    slug: 'premini',
+  },
+  { 
+    nombre: 'Mini', 
+    slug: 'mini',
+  },
+  { 
+    nombre: 'U13 (Infantiles)', 
+    slug: 'u13',
+  },
+  { 
+    nombre: 'U15 (Cadetes)', 
+    slug: 'u15',
+  },
+  { 
+    nombre: 'U17 (Juveniles)', 
+    slug: 'u17',
+  },
+  { 
+    nombre: 'U21 (Liga Proximo)', 
+    slug: 'u21',
+  },
+  { 
+    nombre: 'Primera Flex', 
+    slug: 'flex',
+  },
+  { 
+    nombre: 'Primera Superior', 
+    slug: 'primera',
+  },
+];
+---
+<Layout>
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        <!-- Encabezado -->
+        <section class="mb-10 sm:mb-14 pb-6 sm:pb-8 border-b border-[#e8e8e8]">
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-light tracking-tight text-[#1e1e1e] leading-tight">
+                <strong class="font-semibold">Categorías</strong> disponibles
+            </h1>
+            <p class="text-base sm:text-lg text-[#777] font-light mt-2">
+                Explora y selecciona una categoría para ver sus estadísticas
+            </p>
+        </section>
+
+        <!-- Grid de categorías -->
+        <section>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {categorias.map((categoria) => (
+                <a
+                    href={`/categoria/${categoria.slug}`}
+                    class="group bg-white rounded-2xl border border-[#e8e8e8] p-6 sm:p-8 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-black/5 hover:border-[#d0d0d0] block"
+                >
+                    <div class="flex items-start gap-4">
+                        <div class="flex-1 min-w-0">
+                            <!-- Nombre de la categoría -->
+                            <h2 class="text-lg sm:text-xl font-medium text-[#1e1e1e] group-hover:text-[#333] transition-colors">
+                            {categoria.nombre}
+                            </h2>
+                            
+                            <!-- Indicador de link -->
+                            <div class="flex items-center gap-1.5 mt-3 text-xs font-medium text-[#999] group-hover:text-[#1e1e1e] transition-colors">
+                            <span>Ver estadísticas</span>
+                            <svg class="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                ))}
+            </div>
+
+            <!-- Mensaje si no hay categorías -->
+            {categorias.length === 0 && (
+                <div class="text-center py-16">
+                <p class="text-[#999] text-lg">No hay categorías disponibles</p>
+                </div>
+            )}
+        </section>
+
+        <!-- Contador de categorías -->
+        <section class="mt-10 sm:mt-14 pt-6 sm:pt-8 border-t border-[#e8e8e8]">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+                <div class="flex items-center gap-2 text-sm text-[#666]">
+                <span class="font-medium text-[#1e1e1e]">{categorias.length}</span>
+                <span>categorías disponibles</span>
+                </div>
+                <a 
+                href="/" 
+                class="text-sm text-[#666] hover:text-[#1e1e1e] transition-colors flex items-center gap-1.5"
+                >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Volver al inicio
+                </a>
+            </div>
+        </section>
+    </main>
+</Layout>

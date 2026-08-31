@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  allboys-stats-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - PUBLIC_BACKEND_URL=${PUBLIC_BACKEND_URL}
+    container_name: allboys-stats-frontend
+    env_file:
+      - .env
+    environment:
+      BACKEND_URL: ${NGINX_BACKEND_URL}
+    depends_on:
+      - allboys-stats-backend
+    networks:
+      - app-network
+      - reverse-proxy_proxy_network
+    restart: unless-stopped
+
+  allboys-stats-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: allboys-stats-backend
+    env_file:
+      - .env
+    environment:
+      PORT: ${PORT}
+      FRONTEND_URL: ${FRONTEND_URL}
+    # volumes:
+    #   - backend-data:/app/data
+    networks:
+      - app-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:${PORT:-5000}/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  app-network:
+    driver: bridge
+    internal: true
+  
+  reverse-proxy_proxy_network:
+    external: true
+    name: reverse-proxy_proxy_network
+
+volumes:
+  backend-data:
+    driver: local

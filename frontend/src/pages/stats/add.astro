@@ -1,0 +1,215 @@
+---
+import Layout from "../../layouts/Layout.astro";
+
+// src/pages/subir-estadistica.astro
+
+// No necesitas getStaticPaths para esta página, es solo un formulario
+---
+<Layout>
+    <main class="flex-1 max-w-2xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+      <!-- Encabezado -->
+      <div class="mb-8 pb-6 border-b border-[#e8e8e8]">
+        <h1 class="text-3xl sm:text-4xl font-light tracking-tight text-[#1e1e1e]">
+          <strong class="font-semibold">Subir</strong> Estadísticas
+        </h1>
+        <p class="text-base text-[#777] font-light mt-2">
+          Agrega un archivo CSV con las estadísticas de un partido
+        </p>
+      </div>
+
+      <!-- Formulario -->
+      <div class="bg-white rounded-2xl border border-[#e8e8e8] p-6 sm:p-8">
+        <form id="statsForm" enctype="multipart/form-data" class="space-y-6">
+          <!-- Campo Fecha -->
+          <div>
+            <label for="fecha" class="block text-sm font-medium text-[#555] mb-1.5">
+              Fecha del partido
+            </label>
+            <input
+              type="date"
+              id="fecha"
+              name="fecha"
+              required
+              class="w-full px-4 py-2.5 bg-[#fafafa] border border-[#d0d0d0] rounded-xl focus:outline-none focus:border-[#888] focus:bg-white transition-colors text-[#1e1e1e]"
+            />
+          </div>
+
+          <!-- Campo Select - Opción -->
+          <div>
+            <label for="opcion" class="block text-sm font-medium text-[#555] mb-1.5">
+              Categoría / Opción
+            </label>
+            <select
+              id="opcion"
+              name="opcion"
+              required
+              class="w-full px-4 py-2.5 bg-[#fafafa] border border-[#d0d0d0] rounded-xl focus:outline-none focus:border-[#888] focus:bg-white transition-colors text-[#1e1e1e] appearance-none bg-[url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%228%22 viewBox=%220 0 12 8%22%3E%3Cpath d=%22M1 1l5 5 5-5%22 stroke=%22%23555%22 stroke-width=%221.5%22 fill=%22none%22 stroke-linecap=%22round%22/%3E%3C/svg%3E')] bg-no-repeat bg-[position:right_1rem_center] bg-[length:12px]"
+            >
+              <option value="" disabled selected>Selecciona una opción</option>
+              <option value="premini">Premini</option>
+              <option value="mini">Mini</option>
+              <option value="u13">U13</option>
+              <option value="u15">U15</option>
+              <option value="u17">U17</option>
+              <option value="u21">U21</option>
+              <option value="flex">Primera Flex</option>
+              <option value="primera">Primera Superior</option>
+            </select>
+          </div>
+
+          <!-- Campo File (CSV) -->
+          <div>
+            <label for="csv" class="block text-sm font-medium text-[#555] mb-1.5">
+              Archivo CSV
+            </label>
+            <div class="relative">
+              <input
+                type="file"
+                id="csv"
+                name="csv"
+                accept=".csv"
+                required
+                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+              />
+              <div class="flex items-center justify-between bg-[#fafafa] border border-[#d0d0d0] rounded-xl px-4 py-2.5 transition-colors hover:border-[#a0a0a0] hover:bg-[#f7f7f7]">
+                <span id="file-name" class="text-[#555] text-sm">Ningún archivo seleccionado</span>
+                <span class="bg-[#e8e8e8] px-3 py-1 rounded-full text-xs font-medium text-[#333]">Examinar</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón de envío -->
+          <button
+            type="submit"
+            id="submitBtn"
+            class="w-full py-3 bg-[#1e1e1e] text-white font-medium rounded-xl hover:bg-[#333] transition-colors shadow-sm hover:shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Subir estadísticas
+          </button>
+        </form>
+
+        <!-- Contenedor para mensajes -->
+        <div id="messageContainer" class="mt-6"></div>
+      </div>
+
+      <!-- Botón de volver -->
+      <div class="mt-6">
+        <a
+          href="/"
+          class="inline-flex items-center gap-2 text-sm text-[#666] hover:text-[#1e1e1e] transition-colors"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Volver al inicio
+        </a>
+      </div>
+    </main>
+
+    <!-- ===== Script para manejar el formulario ===== -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('statsForm') as HTMLFormElement;
+        const fileInput = document.getElementById('csv') as HTMLInputElement;
+        const fileNameSpan = document.getElementById('file-name');
+        const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+        const messageContainer = document.getElementById('messageContainer');
+
+        if(!fileInput) return;
+        // Mostrar nombre del archivo seleccionado
+        fileInput.addEventListener('change', function () {
+            if(!fileNameSpan) return;
+          if (this.files && this.files.length > 0) {
+            fileNameSpan.textContent = this.files[0].name;
+          } else {
+            fileNameSpan.textContent = 'Ningún archivo seleccionado';
+          }
+        });
+
+        if(!form) return;
+        // Manejar envío del formulario
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          
+          if(!messageContainer) return;
+          // Limpiar mensaje anterior
+          messageContainer.innerHTML = '';
+          
+          if(!submitBtn) return;
+          // Deshabilitar botón durante el envío
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Enviando...';
+
+          try {
+            if(!form) return;
+            // Crear FormData
+            const formData = new FormData(form);
+            const fecha = formData.get('fecha') as string;
+            if (fecha) {
+                formData.set('fecha', fecha.replace(/-/g, ""));
+            }
+
+            const API_URL = import.meta.env.DEV
+              ? 'http://localhost:5000/api/stats/add'
+              : 'https://allboys-stats.vidalatech.dpdns.org/api/stats/add';
+
+            const response = await fetch(API_URL, {
+              method: 'POST',
+              body: formData,
+            });
+
+            const data = await response.json();
+
+            // Mostrar mensaje según respuesta
+            if (response.ok) {
+              showMessage(
+                'success',
+                '✅ ¡Archivo subido exitosamente!',
+                `Archivo: ${data.archivo}<br>Categoría: ${data.opcion}<br>Fecha: ${data.fecha}`
+              );
+              form.reset();
+              if(!fileNameSpan) return;
+              fileNameSpan.textContent = 'Ningún archivo seleccionado';
+            } else {
+              showMessage(
+                'error',
+                '❌ Error al subir el archivo',
+                data.error || 'Ocurrió un error al procesar la solicitud'
+              );
+            }
+          } catch (error) {
+            showMessage(
+              'error',
+              '❌ Error de conexión',
+              'No se pudo conectar con el servidor. Verifica que el API esté corriendo.'
+            );
+            console.error('Error:', error);
+          } finally {
+            // Rehabilitar botón
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Subir estadísticas';
+          }
+        });
+
+        // Función para mostrar mensajes
+        function showMessage(type: string, title: string, detail :string) {
+          const isSuccess = type === 'success';
+          const bgColor = isSuccess ? 'bg-green-50' : 'bg-red-50';
+          const borderColor = isSuccess ? 'border-green-200' : 'border-red-200';
+          const titleColor = isSuccess ? 'text-green-800' : 'text-red-800';
+          const detailColor = isSuccess ? 'text-green-700' : 'text-red-600';
+          
+          if(!messageContainer) return;
+          messageContainer.innerHTML = `
+            <div class="${bgColor} border ${borderColor} rounded-xl p-4">
+              <h3 class="font-medium ${titleColor}">${title}</h3>
+              ${detail ? `<p class="${detailColor} text-sm mt-1">${detail}</p>` : ''}
+            </div>
+          `;
+
+          // Scroll al mensaje
+          messageContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      });
+    </script>
+</Layout>

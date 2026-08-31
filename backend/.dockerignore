@@ -1,0 +1,41 @@
+# Carpetas de archivos de estadisticas
+estadisticas/
+
+# Entornos virtuales
+.venv/
+venv/
+env/
+.env/
+
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Archivos de git
+.git/
+.gitignore
+
+# Archivos de tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Archivos de datos (opcional)
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# Archivos de build
+dist/
+build/
+*.egg-info/
