@@ -308,6 +308,98 @@ class Database:
 
         return jugadores
 
+    def obtener_data_basica_jugadores(self, categoria):
+        categoria_id = self.obtener_categoria_id( categoria)
+        if not categoria_id:
+            print(f"❌ Categoría '{categoria}' no encontrada.")
+            return []
+
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        query = """
+            SELECT id, nombre
+            FROM jugadores
+            WHERE categoria_id = ?
+            ORDER BY nombre
+        """
+
+        cursor.execute(query, (categoria_id,))
+        jugadores = cursor.fetchall()
+        return [
+            {
+                "id": j['id'],
+                "nombre": j['nombre']
+            }
+            for j in jugadores
+        ]
+
+    def obtener_nombre_jugador(self, id_jugador: int):
+        if not id_jugador:
+            print(f"❌ Jugador con ID '{id_jugador}' no encontrado.")
+            return []
+
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        query = """
+            SELECT 
+                j.nombre
+            FROM jugadores j
+            WHERE j.id = ?
+        """
+            
+        cursor.execute(query, (id_jugador,))
+        resultado = cursor.fetchone()
+        return resultado['nombre']
+    
+    def obtener_datos_jugador(self, id_jugador: int):
+        if not id_jugador:
+            print(f"❌ Jugador con ID '{id_jugador}' no encontrado.")
+            return []
+
+        conn = self.get_connection()
+        cursor = conn.cursor()
+
+        query = """
+            SELECT 
+                p.fecha_partido,
+                e.pts,
+                e.tc2_intentos,
+                e.tc2_acertados,
+                e.tc3_intentos,
+                e.tc3_acertados,
+                e.tl_intentos,
+                e.tl_acertados,
+                e.minutos
+            FROM estadisticas e
+            JOIN partidos p ON e.partido_id = p.id
+            WHERE e.jugador_id = ?
+            AND p.fecha_partido IS NOT NULL
+            ORDER BY p.fecha_partido ASC
+        """
+            
+        cursor.execute(query, (id_jugador,))
+        resultados = cursor.fetchall()
+        
+        evolucion_data = []
+        for row in resultados:
+            # Calcular porcentajes
+            pct2 = (row['tc2_acertados'] / row['tc2_intentos'] * 100) if row['tc2_intentos'] > 0 else 0
+            pct3 = (row['tc3_acertados'] / row['tc3_intentos'] * 100) if row['tc3_intentos'] > 0 else 0
+            pct_tl = (row['tl_acertados'] / row['tl_intentos'] * 100) if row['tl_intentos'] > 0 else 0
+            
+            evolucion_data.append({
+                'fecha': row['fecha_partido'] if row['fecha_partido'] else None,
+                'pts': row['pts'] or 0,
+                'pct2': round(pct2, 1),
+                'pct3': round(pct3, 1),
+                'pct_tl': round(pct_tl, 1),
+                'minutos': row['minutos'] or 0
+            })
+        
+        return evolucion_data
+
     def generar_promedios(self, categoria_nombre):
         """Generar lista de stats iterable"""
         categoria_id = self.obtener_categoria_id( categoria_nombre)
@@ -332,7 +424,8 @@ class Database:
         '''
         
         query = '''
-            SELECT 
+            SELECT
+                j.id,
                 j.nombre,
                 COUNT(DISTINCT e.partido_id) as partidos_jugados,
                 ROUND(AVG(e.minutos), 1) as min_prom,
@@ -381,7 +474,7 @@ class Database:
         jugadores = []
         for row in resultados:
             # Remember to use the same order than the original query
-            (nombre, pj, min_prom, pts_prom, def_reb_prom, of_reb_prom, reb_prom, ast_prom, rec_prom, tap_prom, per_prom, per_total,
+            (id, nombre, pj, min_prom, pts_prom, def_reb_prom, of_reb_prom, reb_prom, ast_prom, rec_prom, tap_prom, per_prom, per_total,
             total_att2, total_made2, total_att3, total_made3, total_att_tl, total_made_tl, val_p) = row
 
             pct2 = (total_made2 / total_att2 * 100) if total_att2 > 0 else 0
@@ -407,6 +500,7 @@ class Database:
             fga_prom = total_fga / pj
             usage_rate = ((0.33 * (ast_prom + 2) + 0.44 * att_tl_prom + per_prom) / stimated_pos_prom) * 100
             jugador = JugadorPromedios(
+                id,
                 nombre, 
                 partidos_jugados = pj, 
                 min_prom = min_prom, 

@@ -1,3 +1,7 @@
+GET http://localhost:5000/api/health
+
+### 
+
 GET http://localhost:5000/api/u21
 
 ###
@@ -10,4 +14,8 @@ GET http://localhost:5000/api/u15/stats
 
 ###
 
-GET http://localhost:5000/api/health
+GET http://localhost:5000/api/u21/stats/1
+
+###
+
+GET http://localhost:5000/api/u21/jugadores

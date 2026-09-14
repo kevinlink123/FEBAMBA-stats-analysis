@@ -5,6 +5,7 @@ from typing import Optional
 @dataclass
 class JugadorPromedios:
     """Modelo de datos para estadísticas de jugador"""
+    id: int
     nombre: str
     partidos_jugados: int
     min_prom: float

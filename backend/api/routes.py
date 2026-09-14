@@ -55,6 +55,19 @@ def get_category(categoria):
             'error': f'Error al obtener los datos: {str(e)}'
         }), 500
 
+@api_bp.route('/<categoria>/jugadores', methods=['GET'])
+def get_jugadores_ids(categoria):
+    try:
+        jugadores_ids = db.obtener_data_basica_jugadores(categoria)
+        data = {
+            'categoria': categoria,
+            'total_jugadores': len(jugadores_ids),
+            'jugadores': jugadores_ids
+        }
+        return jsonify(data)
+    except Exception as e:
+            return jsonify({'error': str(e)}), 500
+
 # 🔥 ENDPOINT JSON (para consumir desde cualquier frontend)
 @api_bp.route('/<categoria>/stats', methods=['GET'])
 def get_stats_json(categoria):
@@ -143,19 +156,18 @@ def add_stats_to_server():
         return jsonify({'error': f'Error al procesar la solicitud: {str(e)}'}), 500
 
 # 📈 Endpoint con filtros (ejemplo)
-@api_bp.route('/stats/<categoria>/filter', methods=['POST'])
-def filter_stats(categoria):
-    """Filtro de estadísticas (ejemplo)"""
-    data = request.json
-    min_pts = data.get('min_pts', 0)
-    max_pts = data.get('max_pts', 100)
-    
-    jugadores = db.generar_promedios(categoria)
-    
-    # Filtrar
-    filtrados = [j for j in jugadores if min_pts <= j.pts_prom <= max_pts]
-    
-    return jsonify({
-        'total': len(filtrados),
-        'jugadores': filtrados
-    })
+@api_bp.route('/<categoria>/stats/<id_jugador>', methods=['GET'])
+def get_evolucion_jugador(categoria:int, id_jugador: int):
+    """Endpoint para obtener datos de un jugador dado su id"""
+    try:
+        nombre_jugador = db.obtener_nombre_jugador(id_jugador)
+        datos_jugador = db.obtener_datos_jugador(id_jugador)
+        data = {
+            'id_jugador': id_jugador,
+            'nombre': nombre_jugador,
+            'datos_jugador': datos_jugador
+        }
+        return jsonify(data)
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
