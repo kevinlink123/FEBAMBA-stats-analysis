@@ -13,7 +13,8 @@ services:
     environment:
       BACKEND_URL: ${NGINX_BACKEND_URL}
     depends_on:
-      - allboys-stats-backend
+      allboys-stats-backend:
+        condition: service_started
     networks:
       - app-network
       - reverse-proxy_proxy_network
@@ -33,10 +34,11 @@ services:
     #   - backend-data:/app/data
     networks:
       - app-network
+      - reverse-proxy_proxy_network
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:${PORT:-5000}/api/health"]
-      interval: 30s
+      interval: 15s
       timeout: 10s
       retries: 3
 
