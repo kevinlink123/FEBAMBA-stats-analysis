@@ -3,6 +3,7 @@ import { useState, useEffect } from 'preact/hooks';
 
 // Interfaces para los datos
 interface JugadorStats {
+  id: number;
   nombre: string;
   efg: number;
   ast_prom: number;
@@ -153,7 +154,7 @@ export default function CategoriaStatsPage({ categoria }: CategoriaStatsPageProp
               {statsData.jugadores.length > 0 ? (
                 statsData.jugadores.map((jugador, index) => (
                   <tr key={index} class="hover:bg-[#f8f8f8] transition-colors duration-150 border-b border-[#f0f0f0] last:border-b-0">
-                    <td class="py-2.5 px-0 pr-4 text-[#1a1a1a] font-medium whitespace-nowrap">{jugador.nombre}</td>
+                    <td class="py-2.5 px-0 pr-4 text-[#1a1a1a] font-medium whitespace-nowrap"><a href={`/categoria/${categoria}/stats/${jugador.id}`}>{jugador.nombre}</a></td>
                     <td class="py-2.5 px-0 pr-4 font-semibold tabular-nums tracking-[-0.01em] whitespace-nowrap">{jugador.partidos_jugados}</td>
                     <td class="py-2.5 px-0 pr-4 font-semibold tabular-nums tracking-[-0.01em] whitespace-nowrap">{jugador.min_prom?.toFixed(1) ?? '-'}</td>
                     <td class="py-2.5 px-0 pr-4 font-semibold tabular-nums tracking-[-0.01em] whitespace-nowrap">{jugador.pts_prom?.toFixed(1) ?? '-'}</td>

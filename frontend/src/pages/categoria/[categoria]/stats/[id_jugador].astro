@@ -1,0 +1,52 @@
+---
+// src/pages/jugadores/[id].astro
+import Layout from '../../../../layouts/Layout.astro';
+import PlayerStatsPage from '../../../../components/PlayerStatsPage';
+
+// Obtener datos del jugador desde la API
+const { categoria, id_jugador} = Astro.params;
+
+export async function getStaticPaths() {
+    const categorias = [
+        'premini',
+        'mini',
+        'u13',
+        'u15',
+        'u17',
+        'u21',
+        'flex',
+        'primera',
+    ];
+
+    let paths = [];
+
+    for (const categoria of categorias) {
+        // ACA SE USA UNA URL SERVIDA DIRECTO DEL NPM DADO QUE SOLO SE EJECUTA EN BUILD-TIME
+        // ASEGURARSE QUE EL SERVICIO DE BACKEND ESTA CONTRUIDO Y CORRIENDO ANTES DE BUILDEAR EL FRONTEND
+        const apiUrl = import.meta.env.DEV 
+            ? `http://localhost:5000/api/${categoria}/jugadores`
+            : `https://allboys-stats-backend.vidalatech.dpdns.org/api/${categoria}/jugadores`;
+        
+        const response = await fetch(apiUrl);
+        const data = await response.json()
+
+        for (const jugador of data.jugadores) {
+            paths.push({
+                params: {
+                    categoria: categoria,
+                    id_jugador: String(jugador.id)
+                }
+            })
+        }
+    }
+
+    return paths;
+}
+
+---
+
+<Layout>
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        <PlayerStatsPage client:only="preact" categoria={categoria} jugadorId={id_jugador} />
+    </main>
+</Layout>
